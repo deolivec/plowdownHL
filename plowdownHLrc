@@ -1,0 +1,12 @@
+[USER PARAMETER]
+downloadDirectory=/home/USER_NAME/download
+
+[ACCOUNTS PARAMETERS]
+#megaupload
+user=
+account=
+
+#rapidshare
+user=
+account=
+

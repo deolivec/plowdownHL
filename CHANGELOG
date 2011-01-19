@@ -1,0 +1,62 @@
+# plowdownHL.sh : plowdown high level script
+# Copyright (C) 2011 César DE OLIVEIRA
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# Last update : 14/01/2011
+
+# history:
+#         0.1 (creation) bash function
+#         0.2 add multiple inputs (files, links)
+#             change check running
+#         0.3 add debug mode
+#             add clean function
+#         0.4 some improvements
+#             remove bogus
+#         0.5 add one thread by server
+#             download management : remove plowdown -c option because it doesn't work very well
+#             accounts managent for megaupload
+#             links : extract one link per line in a file
+#                     links folder management for megaupload
+#             plowdownHLInfo : add failed download status
+#                              format the output to show page by page
+#                              verbose mode added
+#             plowdownHLRate : new function. show the wget state for each server
+#         0.6 change script name and remove ~/bashrc needed customiazations.
+#               => The script can be sourced in the ~/.bashrc or used directly
+#             add usage function
+#             add pd function
+#         0.7 debug source script when bash process is not exactly called bash. ex: -bash
+#             add download ongoing state in plowdownHLInfo
+#             add some console colors
+#         0.8 plowdownHLCron : add this function. this function can be used with a cron process.
+#                              this function check if downloads have crashed for servers and resart them.
+#             plowdownHLInfo : show total download size
+#         0.9 split the script in several files. One file per action :
+#                     src/get.sh
+#                     src/info.sh
+#                     src/rate.sh
+#                     src/clean.sh
+#                     src/cron.sh
+#                     scripts/pdg
+#                     scripts/pdi
+#                     scripts/plowdownHL.cron
+#             An installation script copy the files in /usr/local/share/plowdownHL and links on /usr/local/bin/
+#             A cron task is configured. The cron script is copied under /etc/cron.hourly
+#             Add a configuration file ~/.plodownHLrc to specify download directory and premium accounts
+#         1.0 plowdownHL.cron : update cron script to remove plowdown full path in src/get.sh
+#             clean.sh : replace killall with a loop using kill for system witout killall
+#             scripts/pdg : force bash use for prevent errors
+#
+

@@ -17,6 +17,6 @@
 plowdowHL is a collection of script which add high level script to use plowshare more easily
 plowshare home page : http://code.google.com/p/plowshare/
 
-To install these scripts, run setup.sh as root
+To install these scripts, run setup.sh with sudo
 
 NB: plowshare must be isntalled

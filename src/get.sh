@@ -43,6 +43,7 @@ function getPremiumAccount()
 #      ;;
       x7_to)
         accountParameter="-b $user:$pwd"
+      ;;
       *)
         accountParameter="-a $user:$pwd"
       ;;

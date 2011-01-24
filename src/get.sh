@@ -44,7 +44,6 @@ function getPremiumAccount()
       x7_to)
         accountParameter="-b $user:$pwd"
       ;;
-
     esac
   else
     accountParameter=""

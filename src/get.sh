@@ -35,6 +35,16 @@ function getPremiumAccount()
       megaupload)
         accountParameter="-a $user:$pwd"
       ;;
+      fileserve)
+        accountParameter="-a $user:$pwd"
+      ;;
+      rapidshare)
+        accountParameter="-a $user:$pwd"
+      ;;
+      x7_to)
+        accountParameter="-b $user:$pwd"
+      ;;
+
     esac
   else
     accountParameter=""

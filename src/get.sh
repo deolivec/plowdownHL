@@ -35,15 +35,6 @@ function getPremiumAccount()
 
   if [ "$user" != "" ] && [ "$pwd" != "" ] ; then
     case $server in
-#      megaupload)
-#        accountParameter="-a $user:$pwd"
-#      ;;
-#      fileserve)
-#        accountParameter="-a $user:$pwd"
-#      ;;
-#      rapidshare)
-#        accountParameter="-a $user:$pwd"
-#      ;;
       x7_to)
         accountParameter="-b $user:$pwd"
       ;;

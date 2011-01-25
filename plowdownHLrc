@@ -3,17 +3,17 @@ downloadDirectory=/home/USER_NAME/download
 
 [ACCOUNTS PARAMETERS]
 #megaupload
-user=
 account=
+password=
 
 #rapidshare
-user=
 account=
+password=
 
 #fileserve
-user=
 account=
+password=
 
 #x7_to
-user=
 account=
+password=

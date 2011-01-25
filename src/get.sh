@@ -23,8 +23,8 @@ function getPremiumAccount()
   while read line ; do
     [[ $line == *$server* ]] && serverConfigFile=1
 
-    if [ "$serverConfigFile" -eq "1" ] && [[ $line == *account=* ]] ; then
-      user=$(echo $line|sed -n 's:account=\(.*\):\1:p')
+    if [ "$serverConfigFile" -eq "1" ] && [[ $line == *username=* ]] ; then
+      user=$(echo $line|sed -n 's:username=\(.*\):\1:p')
       serverConfigFile=2
     fi
     if [ "$serverConfigFile" -eq "2" ] && [[ $line == *password=* ]] ; then

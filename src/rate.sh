@@ -35,7 +35,7 @@ while [ "$loop" == "run" ] ; do
     echo "-----------------------------------"
     echo "Download status. Choose the server."
     echo "-----------------------------------"
-    local count=1
+    count=1
     for file in $files ; do
       echo "$count: $(echo $file | sed "s:$plowdownStatus.::")"
       count=$((count+1))

@@ -26,7 +26,9 @@ userConfigFile=/home/$USER/.plowdownHLrc
 
 if [ -e $userConfigFile ] ; then
   downDir=$(sed -n 's:downloadDirectory=\(.*\):\1:p' $userConfigFile)
-  tmpDir=$downDir"/.plowdownTmp"
+  #tmpDir=$downDir"/.plowdownTmp"
+  tmpDir=$(sed -n 's:tmpDownloadDirectory=\(.*\):\1:p' $userConfigFile)
+  [ "$tmpDir" == "" ] && tmpDir=$downDir
 fi
 
 # Define some colors first:

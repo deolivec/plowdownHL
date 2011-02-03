@@ -23,8 +23,9 @@ read choice
 if [ "$choice" == "y" ] ; then
   for pid in $(ps aux|grep plowdown |awk '{print $2}'); do kill $pid 2>/dev/null; done
   for pid in $(ps aux|grep curl |awk '{print $2}'); do kill $pid 2>/dev/null; done
+  #delete plowshare traces and plowdownHL traces
   \rm -fr /tmp/plowdown*
-  [ "$tmpDir" != "" ] && \rm -f $tmpDir/*
+  [ "$tmpDir" != "" ] && [ "$downDir" != "$tmpDir" ] && \rm -f $tmpDir/*
   echo -e "${RED}Clean done."
 else
   echo -e "${RED}Nothing done."

@@ -15,7 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if [[ $EUID -ne 0 ]] ; then
+#!/bin/bash
+
+if [[ $EUID -ne 0 ]] 2>/dev/null; then
    echo "This script must be run as root" 1>&2
    echo "use sudo for example..."
    exit 1
@@ -23,11 +25,12 @@ fi
 
 case $1 in
   install)
-    \mkdir /usr/local/share/plowdownHL
+    [ ! -e /usr/local/share/plowdownHL ] &&  \mkdir /usr/local/share/plowdownHL
     \cp src/* /usr/local/share/plowdownHL/
     \cp scripts/pdg /usr/local/bin/
     \cp scripts/pdi /usr/local/bin/
     \cp scripts/plowdownHL.cron /etc/cron.hourly/
+    \rm -f /usr/local/bin/pd[rc] 2>/dev/null
     \ln -s /usr/local/share/plowdownHL/rate.sh /usr/local/bin/pdr
     \ln -s /usr/local/share/plowdownHL/clean.sh /usr/local/bin/pdc
     \chmod +x /usr/local/share/plowdownHL/*
@@ -39,14 +42,14 @@ case $1 in
       read user
     fi
     if [ ! -e /home/$user/.plowdownHLrc ] ; then
-      cp plowdownHLrc /home/$user/.plowdownHLrc
-      chown $user /home/$user/.plowdownHLrc
+      \cp plowdownHLrc /home/$user/.plowdownHLrc
+      \chown $user /home/$user/.plowdownHLrc
       echo "Don't forget to adapt your configuration file: /home/$user/.plowdownHLrc"
     else
       echo "Configuration file already exist : /home/$user/.plowdownHLrc" 
     fi
-    sed -i "s:USER_NAME:$user:" /home/$user/.plowdownHLrc
-    sed -i "s:USER_NAME:$user:" /etc/cron.hourly/plowdownHL.cron
+    \sed -i "s:USER_NAME:$user:" /home/$user/.plowdownHLrc
+    \sed -i "s:USER_NAME:$user:" /etc/cron.hourly/plowdownHL.cron
     echo "install done."
   ;;
   uninstall)

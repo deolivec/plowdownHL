@@ -15,8 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-if [[ $EUID -ne 0 ]]; then
+if [[ $EUID -ne 0 ]] ; then
    echo "This script must be run as root" 1>&2
    echo "use sudo for example..."
    exit 1
@@ -39,9 +38,14 @@ case $1 in
       echo "type user name account to configure"
       read user
     fi
-    echo "Configuration file is : /home/$user/.plowdownHLrc"
-    echo "Don't forget to edit"
-    [ ! -e /home/$user/.plowdownHLrc ] && cp plowdownHLrc /home/$user/.plowdownHLrc
+    if [ ! -e /home/$user/.plowdownHLrc ] ; then
+      cp plowdownHLrc /home/$user/.plowdownHLrc
+      chown $user /home/$user/.plowdownHLrc
+      echo "Configuration file is : /home/$user/.plowdownHLrc"
+      echo "Don't forget to edit"
+    else
+      echo "Configuration file already exist : /home/$user/.plowdownHLrc" 
+    fi
     sed -i "s:USER_NAME:$user:" /home/$user/.plowdownHLrc
     sed -i "s:USER_NAME:$user:" /etc/cron.hourly/plowdownHL.cron
     echo "install done."

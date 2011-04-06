@@ -39,7 +39,8 @@ function extractStatus()
       #delete first line for the remaining downloads because it appears on the ongoing section
       [ "$optionalDeleteFirstLine" == "TRUE" ] && sed -i '1d' $tmp
     fi
-    [ "$optionalFilter" != "" ] && [ -e "$downRemaining"_"$server" ] &&  sed -n "s:$optionalFilter:\1:p" "$downRemaining"_"$server" >> $tmp
+    [ "$optionalFilter" != "" ] && [ -e "$downRemaining"_"$server" ] \
+      &&  sed -n "s:$optionalFilter:\1:p" "$downRemaining"_"$server" >> $tmp
 
     if [ -e  $tmp ] ; then
       nbLine=$(wc -l < $tmp 2>/dev/null)
@@ -64,7 +65,8 @@ function extractStatus()
           fi
         fi
         if [ "$userMsg" == "succed" ] ; then
-          local size=$(cut -d'|' -f2 < $tmp |xargs -d"\n" du -hc 2> /dev/null |awk 'END {print $1}')
+          local size=$(cut -d'|' -f2 < $tmp |xargs -d"\n" du -hc 2> /dev/null \
+                | awk 'END {print $1}')
           echo -e "${CYAN}Total: ${RED}$size${NC}"
         fi
       fi
@@ -109,29 +111,33 @@ if [ "$( ls "$plowdownStatus"_* 2>/dev/null)" != "" ] ; then
   echo -e "Download(s) ongoing: "
   echo -e "---------------------${NC}"
   for file in $(ls "$plowdownStatus"_*) ; do
-    fileName=$(sed -n 's/Filename: \(.*\)/\1/p' $file|tail -1)
-    server=$(echo $file|sed "s:$plowdownStatus.::")
-    downloadStatusLine=$(tr  "\015" "\n" < $file|tail -1)
+  fileName=$(sed -n 's/Filename: \(.*\)/\1/p' $file|tail -1)
+  server=$(echo $file|sed "s:$plowdownStatus.::")
+  if [ "$fileName" == "" ] ; then
+    echo -e "${RED}Download doesn't start on ${CYAN}$server${NC}"
+  else
+      downloadStatusLine=$(tr  "\015" "\n" < $file|tail -1)
 
-    fileDownloadPercentage=$(echo $downloadStatusLine |awk '{ print $1}')
-    fileSize=$(echo $downloadStatusLine|awk '{ print $2}')
-    fileDownloaded=$(echo $downloadStatusLine |awk '{ print $4}')
-    timeSpent=$(echo $downloadStatusLine |awk 'END  { print $10}')
-    timeRemaining=$(echo $downloadStatusLine |awk 'END  { print $11}')
+      fileDownloadPercentage=$(echo $downloadStatusLine |awk '{ print $1}')
+      fileSize=$(echo $downloadStatusLine|awk '{ print $2}')
+      fileDownloaded=$(echo $downloadStatusLine |awk '{ print $4}')
+      timeSpent=$(echo $downloadStatusLine |awk 'END  { print $10}')
+      timeRemaining=$(echo $downloadStatusLine |awk 'END  { print $11}')
 
-    if [ "$(echo $fileDownloadPercentage|egrep '[0-9\.]+[kMG]')" == "" ] &&
-         [ "$(echo $fileSize|egrep '[0-9\.]+[kMG]')" == "" ] &&
-         [ "$(echo $fileDownloaded|egrep '[0-9\.]+[kMG]')" == "" ] &&
-         [ "$(echo $timeSpent|egrep '[0-9\:]+')" == "" ] &&
-         [ "$(echo $timeRemaining|egrep '[0-9\:]+')" == "" ] ; then
-      echo -e "${RED}Download doesn't start for ${CYAN}$fileName${NC}"
-    else
-      echo -e "${RED}On $server${NC}"
-      echo -e "${CYAN}Filename: ${NC}$fileName"
-      echo -e "${CYAN}Downloaded: ${RED}$fileDownloadPercentage%${NC} ($fileDownloaded/$fileSize)."
-      echo -e "${CYAN}Time spent: ${RED}$timeSpent. ${CYAN}Time remaining: ${RED}$timeRemaining.${NC}"
-      echo
-    fi
+      if [ "$(echo $fileDownloadPercentage|egrep '[0-9\.]+[kMG]')" == "" ] &&
+           [ "$(echo $fileSize|egrep '[0-9\.]+[kMG]')" == "" ] &&
+           [ "$(echo $fileDownloaded|egrep '[0-9\.]+[kMG]')" == "" ] &&
+           [ "$(echo $timeSpent|egrep '[0-9\:]+')" == "" ] &&
+           [ "$(echo $timeRemaining|egrep '[0-9\:]+')" == "" ] ; then
+        echo -e "${RED}Download doesn't start for ${CYAN}$fileName${NC}"
+      else
+        echo -e "${RED}On $server${NC}"
+        echo -e "${CYAN}Filename: ${NC}$fileName"
+        echo -e "${CYAN}Downloaded: ${RED}$fileDownloadPercentage%${NC} ($fileDownloaded/$fileSize)."
+        echo -e "${CYAN}Time spent: ${RED}$timeSpent. ${CYAN}Time remaining: ${RED}$timeRemaining.${NC}"
+        echo
+      fi
+  fi
   done
 fi
 
@@ -153,4 +159,3 @@ if [ "$(ps -C plowdown| sed '1d')" == "" ] ; then
     echo
   fi
 fi
-

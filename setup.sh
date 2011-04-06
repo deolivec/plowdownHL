@@ -41,8 +41,7 @@ case $1 in
     if [ ! -e /home/$user/.plowdownHLrc ] ; then
       cp plowdownHLrc /home/$user/.plowdownHLrc
       chown $user /home/$user/.plowdownHLrc
-      echo "Configuration file is : /home/$user/.plowdownHLrc"
-      echo "Don't forget to edit"
+      echo "Don't forget to adapt your configuration file: /home/$user/.plowdownHLrc"
     else
       echo "Configuration file already exist : /home/$user/.plowdownHLrc" 
     fi

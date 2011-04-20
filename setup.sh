@@ -17,11 +17,20 @@
 
 #!/bin/bash
 
+# Define some colors first:
+RED='\e[1;31m'
+BLUE='\e[1;34m'
+CYAN='\e[1;36m'
+NC='\e[0m' # No Color
+
+
 if [[ $EUID -ne 0 ]] 2>/dev/null; then
-   echo "This script must be run as root" 1>&2
-   echo "use sudo for example..."
+   echo -e "\n${RED}This script must be run as root${NC}" 1>&2
+   echo -e "${BLUE}use sudo for example...${NC}\n"
    exit 1
 fi
+
+alias echo='/bin/echo -e'
 
 case $1 in
   install)
@@ -38,28 +47,29 @@ case $1 in
     if [ "$SUDO_USER" != "" ] ; then
       user=$SUDO_USER
     else
-      echo "type user name account to configure"
+      echo "${BLUE}type user name account to configure${NC}"
       read user
     fi
     if [ ! -e /home/$user/.plowdownHLrc ] ; then
       \cp plowdownHLrc /home/$user/.plowdownHLrc
       \chown $user /home/$user/.plowdownHLrc
-      echo "Don't forget to adapt your configuration file: /home/$user/.plowdownHLrc"
+      echo "\n${RED}Don't forget to adapt your configuration file: ${CYAN}/home/$user/.plowdownHLrc${NC}"
     else
-      echo "Configuration file already exist : /home/$user/.plowdownHLrc" 
+      echo "\n${BLUE}Configuration file already exist: ${CYAN}/home/$user/.plowdownHLrc${NC}" 
     fi
     \sed -i "s:USER_NAME:$user:" /home/$user/.plowdownHLrc
     \sed -i "s:USER_NAME:$user:" /etc/cron.hourly/plowdownHL.cron
-    echo "install done."
+    echo "${RED}To get help about this tool, type: ${CYAN}pdg -h${NC}"
+    echo "${BLUE}install done.${NC}\n"
   ;;
   uninstall)
     \rm -fr /usr/local/share/plowdownHL
     \rm -f /usr/local/bin/{pdi,pdg,pdc,pdr}
     \rm -f /etc/cron.hourly/plowdownHL.cron
-    echo "uninstall done."
+    echo "\n${RED}uninstall done.${NC}\n"
   ;;
   *)
-    echo "Usage : install/uninstall"
+    echo "\n${RED}Usage : install/uninstall${NC}\n"
   ;;
 esac
 

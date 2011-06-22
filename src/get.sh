@@ -99,7 +99,7 @@ function addLink()
   [ "$#" -eq "0" ] && return
 
   local link=$(echo $@ | sed -n 's:.*\(http[^ ]*\).*:\1:p')
-  local server=$(echo $link| sed -n 's#.*http://w*\.*\([^\.]*\).*#\1#p')
+  local server=$(echo $link| sed -n 's#.*http.://w*\.*\([^\.]*\).*#\1#p')
   local linkType
   local tmp=$logDir/tmp
   local err=0

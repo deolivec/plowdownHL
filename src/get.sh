@@ -99,41 +99,17 @@ function addLink()
   [ "$#" -eq "0" ] && return
 
   local link=$(echo $@ | sed -n 's:.*\(http[^ ]*\).*:\1:p')
-  local server=$(echo $link| sed -n 's#.*http.://w*\.*\([^\.]*\).*#\1#p')
-  local linkType
   local tmp=$logDir/tmp
   local err=0
 
-  case $server in
-    megaupload)
-      if [ $(echo $link| sed -n 's:.*\.com/?\(.\)=.*:\1:p') == "f" ] ; then
-        linkType="folder"
-      else
-        linkType="link"
-      fi
-    ;;
-    "")
-      linkType="none"
-    ;;
-    *)
-      linkType="link"
-    ;;
-  esac
-
-  case $linkType in
-    folder)
-      echoInfo "Adding the folder links: ${CYAN}$link${NC}"
-      plowlist $link > $tmp
-    ;;
-    link)
-      echo $link > $tmp
-    ;;
-    *)
-      touch $tmp
-      echoInfo "${RED}Invalid link: $@${NC}"
-      err=1
-    ;;
-  esac
+  if plowdown --get-module "${link}" &>/dev/null
+  then
+    plowlist ${link} > $tmp 2>/dev/null && echo "Adding the folder links: ${CYAN}$link${NC}" || echo $link > $tmp
+  else
+    touch $tmp
+    echoInfo "${RED}Invalid link: $@${NC}"
+    err=1
+  fi
 
   while read link ; do
     if [ "$(grep $link "$downRemaining"_"$server" 2>/dev/null)" == "" ] ; then
@@ -147,6 +123,7 @@ function addLink()
   \rm -f $tmp 2>/dev/null
   return $err
 }
+
 
 #
 # Main
